@@ -19,6 +19,9 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $label = 'Data User';
+    protected static ?string $pluralLabel = 'Data User'; // untuk label di sidebar
+
+
 
     public static function form(Form $form): Form
     {

@@ -18,7 +18,10 @@ class PelangganResource extends Resource
     protected static ?string $model = Pelanggan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-face-smile';
-    protected static ?string $label = 'Data staff';
+    protected static ?string $label = 'Data Staff';
+    protected static ?string $pluralLabel = 'Data Staff'; // untuk label di sidebar
+
+
 
     public static function form(Form $form): Form
     {
