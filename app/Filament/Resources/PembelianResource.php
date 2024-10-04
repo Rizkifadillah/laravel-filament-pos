@@ -48,7 +48,7 @@ class PembelianResource extends Resource
                         $supplier = Supplier::find($state);
                         $set('email',$supplier->email ?? null);
                     }),
-                TextInput::make('email')
+                TextInput::make('email')->disabled()
             ]);
     }
 
