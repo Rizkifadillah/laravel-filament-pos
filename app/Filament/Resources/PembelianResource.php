@@ -2,17 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PembelianResource\Pages;
-use App\Filament\Resources\PembelianResource\RelationManagers;
-use App\Models\Pembelian;
-use App\Models\Supplier;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Set;
+use App\Models\Supplier;
+use Filament\Forms\Form;
+use App\Models\Pembelian;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\PembelianResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PembelianResource\RelationManagers;
 
 class PembelianResource extends Resource
 {
@@ -27,7 +30,7 @@ class PembelianResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('supplier_id')
+                Select::make('supplier_id')
                     ->options(
                         Supplier::pluck('nama_perusahaan', 'id')
                     )
@@ -40,6 +43,12 @@ class PembelianResource extends Resource
                     ->createOptionUsing(function (array $data): int {
                         return Supplier::create($data)->id;
                     })
+                    ->reactive()
+                    ->afterStateUpdated(function($state, Set $set){
+                        $supplier = Supplier::find($state);
+                        $set('email',$supplier->email ?? null);
+                    }),
+                TextInput::make('email')
             ]);
     }
 
