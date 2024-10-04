@@ -28,13 +28,14 @@ class BarangResource extends Resource
                 Forms\Components\TextInput::make('nama')
                     ->required(),
                 Forms\Components\TextInput::make('stok')
+                    ->disabledOn("edit")
                     ->required(),
                 Forms\Components\Select::make('satuan')
-                ->options([
-                    'unit'=>'Unit',
-                    'box'=>'Box',
-                    'pack'=>'Pack',
-                ])
+                    ->options([
+                        'unit'=>'Unit',
+                        'box'=>'Box',
+                        'pack'=>'Pack',
+                    ])
                 ->default('Unit')
                 ->required(),
             ]);

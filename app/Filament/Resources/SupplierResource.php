@@ -21,21 +21,27 @@ class SupplierResource extends Resource
     protected static ?string $label = 'Data Supplier';
     protected static ?string $pluralLabel = 'Data Supplier'; // untuk label di sidebar
 
+    public static function getForm(){
+        return [
+            Forms\Components\TextInput::make('nama_perusahaan'),
+            Forms\Components\TextInput::make('nama_supplier')
+                ->required()
+                ->minLength(3),
+            Forms\Components\TextInput::make('no_hp'),
+            Forms\Components\TextInput::make('email')
+                ->type('email')
+                ->required(),
+            Forms\Components\TextArea::make('alamat')->columnSpanFull(),
+        ];
+    }
+
 
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('nama_perusahaan'),
-                Forms\Components\TextInput::make('nama_supplier')
-                    ->required()
-                    ->minLength(3),
-                Forms\Components\TextInput::make('no_hp'),
-                Forms\Components\TextInput::make('email')
-                    ->type('email')
-                    ->required(),
-                Forms\Components\TextArea::make('alamat')->columnSpanFull(),
-            ]);
+            ->schema(
+                self::getForm()
+            );
     }
 
     public static function table(Table $table): Table
