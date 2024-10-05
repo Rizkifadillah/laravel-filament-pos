@@ -32,7 +32,7 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('password')
                 ->password()
                 ->revealable()
-                // saat edit tidak merubaj password
+                // saat edit tidak merubah password
                 ->dehydrated(fn ($state) => filled($state))
                 ->required(fn (string $context): bool => $context === 'create'),
                 Forms\Components\Select::make('role')
