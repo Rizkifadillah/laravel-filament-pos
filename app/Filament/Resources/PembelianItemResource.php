@@ -2,16 +2,24 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PembelianItemResource\Pages;
-use App\Filament\Resources\PembelianItemResource\RelationManagers;
-use App\Models\PembelianItem;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Set;
+use App\Models\Supplier;
+use Filament\Forms\Form;
+use App\Models\Pembelian;
 use Filament\Tables\Table;
+use App\Models\PembelianItem;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PembelianItemResource\Pages;
+use App\Filament\Resources\PembelianItemResource\RelationManagers;
+use App\Models\Barang;
+use Filament\Forms\Components\Hidden;
 
 class PembelianItemResource extends Resource
 {
@@ -21,9 +29,51 @@ class PembelianItemResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $pembelian = new Pembelian();
+        if (request()->filled('pembelian_id')) {
+            $pembelian = Pembelian::find(request('pembelian_id'));
+        }
+
         return $form
             ->schema([
-                //
+                DatePicker::make('tanggal')
+                    ->label('Tanggal Pembelian')
+                    ->required()
+                    ->default($pembelian->tanggal)
+                    ->native(false)
+                    ->displayFormat('d-mm-Y')
+                    ->disabled()
+                    ->columnSpanFull(),
+                    
+                TextInput::make('supplier_nama')
+                    ->label('Supplier')
+                    ->required()
+                    ->disabled()
+                    ->default($pembelian->supplier?->nama_perusahaan),
+                TextInput::make('supplier_email')
+                    ->label('Email Supplier')
+                    ->required()
+                    ->disabled()
+                    ->default($pembelian->supplier?->email),
+                Select::make('barang_id')
+                    ->options(
+                        Barang::pluck('nama', 'id')
+                    )
+                    ->required()
+                    ->label('Pilih Barang')
+                    ->searchable()
+                    ->reactive()
+                    ->afterStateUpdated(function($state, Set $set){
+                        $barang = Barang::find($state);
+                        $set('harga',$barang->harga ?? null);
+                    }),
+                TextInput::make('harga'),
+                TextInput::make('jumlah')
+                    ->label('Jumlah Barang'),
+                Hidden::make('pembelian_id')
+                    ->default(request('pembelian_id')),
+                
+
             ]);
     }
 
@@ -31,7 +81,8 @@ class PembelianItemResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('tanggal')->searchable(),
+
             ])
             ->filters([
                 //

@@ -35,6 +35,8 @@ class PembelianResource extends Resource
                     ->label('Tanggal Pembelian')
                     ->required()
                     ->default(now())
+                    ->native(false)
+                    ->displayFormat('d-mm-Y')
                     ->columnSpanFull(),
                 Select::make('supplier_id')
                     ->options(
@@ -62,7 +64,8 @@ class PembelianResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('tanggal')->searchable(),
+
             ])
             ->filters([
                 //

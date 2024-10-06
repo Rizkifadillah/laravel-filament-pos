@@ -50,7 +50,7 @@ class PelangganPolicy
 
     public function deleteAny(User $user): bool
     {
-       return $user->role == 'admin';
+       return $user->role == 'operator';
     }
 
     /**

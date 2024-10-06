@@ -27,6 +27,8 @@ class BarangResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('nama')
                     ->required(),
+                Forms\Components\TextInput::make('harga')
+                    ->required(),
                 Forms\Components\TextInput::make('stok')
                     ->disabledOn("edit")
                     ->required(),
@@ -47,6 +49,7 @@ class BarangResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('kode')->searchable(),
                 Tables\Columns\TextColumn::make('nama')->searchable(),
+                Tables\Columns\TextColumn::make('harga')->searchable(),
                 Tables\Columns\TextColumn::make('stok')->searchable(),
                 Tables\Columns\TextColumn::make('satuan')->searchable(),
                 // Tables\Columns\TextColumn::make('alamat')->searchable(),
